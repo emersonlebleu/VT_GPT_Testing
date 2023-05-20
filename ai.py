@@ -21,8 +21,8 @@ class Ai:
             Here's an example for clarity: If a survey text reads 'Please describe your PI: Name, Age, Years' and 'How many of the following patients do you see each year? MM, AML, BMT', I would like the output to be [[Please describe your PI:, Name, Age, Years], [How many of the following patients do you see each year?, MM, AML, BMT]].
             Here's the survey text I'd like you to analyze: {text}. Please present the output in the format explained above.'''
 
-        prompt5 = f'''Dear GPT, I need you to help with processing the survey text. Your task is to extract all the questions from this text and structure them in a specific way. When a question is followed by related sub-questions, treat them as a unit. Organize these units in a list of lists. For example, the text 'Please describe your PI: Name, Age, Years. How many of the following patients do you see each year? MM, AML, BMT' should be interpreted as: [[Please describe your PI:, Name, Age, Years], [How many of the following patients do you see each year?, MM, AML, BMT]].
-            Now, apply this method to the following survey text: {text}.'''
+        prompt5 = f'''Dear GPT, I need you to help with processing the survey text. Your task is to extract all the questions from this text and structure them in a specific way. When a question is followed by related sub-questions, treat them as a unit. Organize these units in a list of lists. For example, the text 'Please describe your PI: Name, Age, Years. How many of the following patients do you see each year? MM, AML, BMT' should be interpreted as: [['Please describe your PI:', 'Name', 'Age', 'Years'], ['How many of the following patients do you see each year?', 'MM', 'AML', 'BMT']].
+            Now, apply this method to the following survey text: {text}. Ensure that each question string is between single quotation marks as demonstrated earlier.'''
 
         openai.api_key = API_KEY
         response = openai.ChatCompletion.create(
@@ -33,6 +33,28 @@ class Ai:
             ]
         )
 
-        text_response = response['choices'][0]['message']['content']
+        text_response = response['choices'][0]['message']['content'].strip()
+        text_response = text_response[text_response.find('['):text_response.rfind(']')+1]
+
+        #make sure parentheses are balanced
+        parentheses_open = 0
+        for x in text_response:
+            if x != '[':
+                break
+            while x == '[':
+                parentheses_open += 1
+        parentheses_close = 0
+        #iterate backwards through string to find closing parentheses
+        for x in text_response[::-1]:
+            if x != ']':
+                break
+            while x == ']':
+                parentheses_close += 1
+
+        #if parentheses are not balanced, add closing parentheses
+        if parentheses_open > parentheses_close:
+            text_response += ']' * (parentheses_open - parentheses_close)
+        elif parentheses_open < parentheses_close:
+            text_response = text_response[:(parentheses_close - parentheses_open) * -1]
 
         return text_response

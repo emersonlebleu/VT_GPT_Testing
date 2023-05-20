@@ -36,3 +36,10 @@ def write_output(text, file_name, folder='output_files'):
     #Writes the text to the file
     with open(file_path, 'w') as file:
         file.write(text)
+
+def read_output(file_name, folder='output_files'):
+    #Reads the output from the file returns the text
+    file_path = os.path.join(BASE_PATH, folder, file_name)
+    with open(file_path, 'r') as file:
+        output = file.read()
+    return output
