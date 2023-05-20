@@ -1,1 +1,5 @@
 .venv/
+bs_files/
+output_files/
+settings.py
+__pycache__/
