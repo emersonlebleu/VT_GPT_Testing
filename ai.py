@@ -41,14 +41,15 @@ class Ai:
         for x in text_response:
             if x != '[':
                 break
-            while x == '[':
+            elif x == '[':
                 parentheses_open += 1
+
         parentheses_close = 0
         #iterate backwards through string to find closing parentheses
         for x in text_response[::-1]:
             if x != ']':
                 break
-            while x == ']':
+            elif x == ']':
                 parentheses_close += 1
 
         #if parentheses are not balanced, add closing parentheses
