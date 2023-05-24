@@ -70,10 +70,16 @@ def standardize_text(text):
                             corrected_text = corrected_text[:j+1] + '], '
                             corrected_text += char
                             opens += 1
+                            closes += 1
                             break
                 #turn off watching
                 watching = False
             else:
                 corrected_text += char
-
+                if char == special[1]:
+                    closes += 1
+    #ensure that opens matches closes if it doesnt add the appropriate number of closes
+    if opens > closes:
+        for i in range(opens-closes):
+            corrected_text += ']'
     return corrected_text
