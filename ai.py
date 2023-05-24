@@ -36,26 +36,44 @@ class Ai:
         text_response = response['choices'][0]['message']['content'].strip()
         text_response = text_response[text_response.find('['):text_response.rfind(']')+1]
 
-        #make sure parentheses are balanced
-        parentheses_open = 0
-        for x in text_response:
-            if x != '[':
-                break
-            elif x == '[':
-                parentheses_open += 1
-
-        parentheses_close = 0
-        #iterate backwards through string to find closing parentheses
-        for x in text_response[::-1]:
-            if x != ']':
-                break
-            elif x == ']':
-                parentheses_close += 1
-
-        #if parentheses are not balanced, add closing parentheses
-        if parentheses_open > parentheses_close:
-            text_response += ']' * (parentheses_open - parentheses_close)
-        elif parentheses_open < parentheses_close:
-            text_response = text_response[:(parentheses_close - parentheses_open) * -1]
+        text_response = standardize_text(text_response)
 
         return text_response
+
+def standardize_text(text):
+    #make sure parentheses are balanced in the string if not add or remove parentheses as necessary
+    opens = 0
+    closes = 0
+    special =['[', ']', ',', ' ']
+    corrected_text = ''
+    watching = False
+    last_location = 0
+
+    for i, char in enumerate(text):
+        if not watching: 
+            if char == special[0]:
+                corrected_text += char
+                opens += 1
+            else:
+                corrected_text += char
+                watching = True
+        else:
+            if char == special[0]:
+                #look at corrected text and check it to make sure the last 3 characters are '], ' if not add them after the last non special character
+                if corrected_text[-3:] == '], ':
+                    corrected_text += char
+                    opens += 1
+                else:
+                    #find the last non special character
+                    for j in range(len(corrected_text)-1, 0, -1):
+                        if corrected_text[j] not in special:
+                            corrected_text = corrected_text[:j+1] + '], '
+                            corrected_text += char
+                            opens += 1
+                            break
+                #turn off watching
+                watching = False
+            else:
+                corrected_text += char
+
+    return corrected_text
