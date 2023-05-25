@@ -3,23 +3,27 @@ from spider import Spider
 from ai import Ai
 from file_io import new_soup, write_soup, read_soup_body, write_output, read_output
 
-#One spider for each site
+#Spider
 spider = Spider()
 url = 'http://labcorp.us-mkia-0nms-03592088-in-patientswithrelapsed-or-refractory-aml.alchemer.com/s3/?snc=1684532429_6467eccdc9def4.43205362'
 html = spider.get_body_html(url)
 
-#prompt5 test
+#Set up files
 file_path = new_soup('soup.txt', 'bs_files')
 output_file = 'today_output.txt'
 write_soup(html, file_path)
 body_html = read_soup_body(file_path)
+
+#AI
 ai = Ai()
 
+#Testing Variables
 iter_num = 1
 success_num = 0
 errors = {}
-number = 20
+number = 10
 
+#Testing Loop
 for num in range(number):
     questions = ai.get_questions(body_html)
 
@@ -36,5 +40,8 @@ for num in range(number):
         break
     iter_num += 1    
 
+#Get & Display Success Rate
 print('Success rate: ' + str((success_num/iter_num)*100)+'%')
+
+#Write the errors to a file for review
 write_output(str(errors), 'results.txt')

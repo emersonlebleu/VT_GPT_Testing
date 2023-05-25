@@ -24,3 +24,9 @@ def test_standardization4():
     desired_result = '''[['please tell me the following', 'name', 'age', 'years'], ['how many of the following patients do you see each year', 'mm', 'aml', 'bmt']]'''
     result = standardize_text(test_string)
     assert result == desired_result, 'Standardization senario 4 failed: End bracket problem'
+
+def test_standardization5():
+    test_string = '''[['please tell me the following', 'name', 'age', 'years']], ['how many of the following patients do you see each year', 'mm', 'aml', 'bmt']'''
+    desired_result = '''[['please tell me the following', 'name', 'age', 'years'], ['how many of the following patients do you see each year', 'mm', 'aml', 'bmt']]'''
+    result = standardize_text(test_string)
+    assert result == desired_result, 'Standardization senario 5 failed: Double End Bracket problem'
