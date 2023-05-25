@@ -1,6 +1,6 @@
 from ai import standardize_text
 
-#testing file
+#Test cases for the most commonly observed errors from the AI responses
 def test_standardization1():
     test_string = '''[['please tell me the following', 'name', 'age', 'years', ['how many of the following patients do you see each year', 'mm', 'aml', 'bmt']]'''
     desired_result = '''[['please tell me the following', 'name', 'age', 'years'], ['how many of the following patients do you see each year', 'mm', 'aml', 'bmt']]'''
