@@ -15,25 +15,26 @@ write_soup(html, file_path)
 body_html = read_soup_body(file_path)
 ai = Ai()
 
-iter_num = 0
+iter_num = 1
 success_num = 0
+errors = {}
+number = 20
 
-for num in range(51):
+for num in range(number):
     questions = ai.get_questions(body_html)
-    write_output(questions, output_file)
-
-    gpt_response = read_output(file_name=output_file)
-    iter_num += 1
 
     try:
-        gpt_response_list = eval(gpt_response)
-        print('Prompt success')
+        gpt_response_list = eval(questions)
+        print(f'Prompt success: {iter_num}')
         success_num += 1
-        # print(gpt_response_list)
     except Exception as e:
-        print('Prompt failed')
-        print(e)
-        print(gpt_response)
+        print(f'Prompt failed: {iter_num}')
+        print(e) 
+        errors[iter_num] = [questions, 'Failed']
+
+    if num == number-1:
         break
+    iter_num += 1    
 
 print('Success rate: ' + str((success_num/iter_num)*100)+'%')
+write_output(str(errors), 'results.txt')
