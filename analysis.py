@@ -21,7 +21,7 @@ ai = Ai()
 iter_num = 1
 success_num = 0
 errors = {}
-number = 10
+number = 20
 
 #Testing Loop
 for num in range(number):

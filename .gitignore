@@ -3,3 +3,4 @@ bs_files/
 output_files/
 settings.py
 __pycache__/
+.pytest_cache/
