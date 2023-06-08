@@ -1,7 +1,7 @@
 {
-    "manifest_version": 1,
+    "manifest_version": 2,
     "name": "Question Wrangler",
-    "version": "0.0",
+    "version": "1.0",
     "description": "Communicates with scripts to find the questions on the page and wraps them in different colors.",
     "permissions": ["activeTab"],
     "browser_action": {
