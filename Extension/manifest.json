@@ -1,26 +1,25 @@
 {
-    "manifest_version": 2,
+    "manifest_version": 3,
     "name": "Question Wrangler",
     "version": "1.0",
     "description": "Communicates with scripts to find the questions on the page and wraps them in different colors.",
-    "permissions": ["activeTab"],
-    "browser_action": {
-      "default_popup": "menu.html",
+    "permissions": ["activeTab", "tabs", "storage"],
+    "action": {
       "default_icon": {
-        "16": "icon16.png",
-        "48": "icon48.png",
-        "128": "icon128.png"
+        "16": "assets/icon16.png",
+        "48": "assets/icon48.png",
+        "128": "assets/icon128.png"
       }
     },
-    "background": {
-      "scripts": ["send_receive.js"],
-      "persistent": false
+    "service_worker": {
+      "script": "background.js"
     },
     "content_scripts": [
-      {
-        "matches": ["https://example.com/*"],
-        "js": ["wrap.js"],
-        "css": ["wrap_styles.css"]
-      }
-    ]
+        {
+          "matches": ["<all_urls>"],
+          "js": ["contentScript.js"]
+        }
+      ],
+    "default_popup": "menu.html",
+    "default_title": "Question Wrangler"
   }

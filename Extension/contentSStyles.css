@@ -1,0 +1,10 @@
+#press-counter{
+    position: fixed;
+    top: 0;
+    right: 0;
+    background-color: #000;
+    color: #fff;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
